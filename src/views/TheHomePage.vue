@@ -42,7 +42,7 @@ const imageList: imageListCLass[] = [
 <style scoped lang="less">
 .homePage {
     position: relative;
-    background-color: #e291b7;
+    background-color:#eceff1 ;
 
     img {
         width: 320px;

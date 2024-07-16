@@ -88,7 +88,7 @@ const turnToShowPage = (id: number) => {
 </template>
 <style scoped lang="less">
 .article {
-    background-color: #4c7ee0;
+    background-color: #eceff1;
     position: relative;
     display: flex;
     align-items: start;

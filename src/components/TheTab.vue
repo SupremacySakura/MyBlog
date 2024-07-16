@@ -47,7 +47,7 @@ onMounted(() => {
         </el-carousel>
     </div>
     <!-- 导航栏 -->
-    <div class="tab" :class="{ relative: !needImage }">
+    <div class="tab">
         <span class="name">
             余心知秋的博客
         </span>
@@ -66,7 +66,7 @@ onMounted(() => {
 .tabBackgroundImage {
     width: 100%;
     height: 600px;
-
+    margin-top: 50px;
     img {
         width: 100%;
         height: 100%;
@@ -77,45 +77,45 @@ onMounted(() => {
 .tab {
     display: flex;
     width: 100%;
-    height: 100px;
-    position: absolute;
+    height: 50px;
+    position:fixed ;
     top: 0;
-    z-index: 1;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.1);
-
+    color: black;
+    background-color: white;
     .name {
         width: 20%;
-        height: 30px;
+        height: 50px;
         font-size: 24px;
         font-weight: 600;
         margin-left: 10px;
         position: relative;
-        z-index: 1;
+        line-height: 50px;
     }
 
     .tabList {
-        width: 10%;
+        width: 5%;
         height: 30px;
         margin-left: 10px;
         cursor: pointer;
         position: relative;
         top: 20px;
-        z-index: 1;
         font-size: 16px;
+    }
+    .tabList:hover{
+        color: #439388;
     }
 
     .utils {
         .publish {
             width: 100px;
-            height: 50px;
-            line-height: 50px;
+            height: 40px;
+            line-height: 40px;
             position: absolute;
             border-radius: 25px;
-            background-color: white;
-            color: black;
+            background-color: #202b2d;
+            color: white;
             text-align: center;
-            top: 10px;
+            top: 5px;
             right: 10px;
             cursor: pointer;
         }
@@ -123,13 +123,10 @@ onMounted(() => {
 
 }
 
-.relative {
-    position: relative;
-    background-color: rgba(0, 0, 0.5);
-}
 
 //导航高亮类
 .active {
-    color: red;
+    color: #439388;
 }
+
 </style>

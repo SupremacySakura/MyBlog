@@ -124,9 +124,10 @@ const handleArticle = () => {
 </template>
 <style scoped lang="less">
 .publishPage {
+    margin-top: 50px;
     width: 100%;
     min-height: 1000px;
-    background-color: blueviolet;
+    background-color: #eceff1;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -176,7 +177,7 @@ const handleArticle = () => {
         display: flex;
         flex-direction: column;
         align-items: center;
-
+        margin-bottom: 50px;
         .cover {
             display: flex;
             align-items: center;
@@ -235,7 +236,6 @@ const handleArticle = () => {
         display: flex;
         align-items: center;
         justify-content: end;
-
         .publish {
             height: 40px;
             width: 100px;

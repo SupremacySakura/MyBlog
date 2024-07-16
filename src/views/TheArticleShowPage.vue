@@ -41,7 +41,9 @@ const article = articleList.value.find(item => item.id === id) || new articleCla
 <style scoped lang="less">
 .all {
     width: 100%;
-    background-color: aquamarine;
+    margin-top: 50px;
+    padding-bottom: 50px;
+    background-color: #eceff1;
 
     .article {
         width: 60%;
