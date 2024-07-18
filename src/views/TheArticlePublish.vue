@@ -33,9 +33,10 @@ const imageUrl = ref<string[]>([])
 //标题
 const head = ref<string>('')
 //正文
+const textArea = ref(null)
 const paragraph = ref<string>('')
 const article = computed(() => {
-    return paragraph.value.split(' ')
+    return paragraph.value.split('#')
 })
 //添加图片函数
 const addImage = (event: any, type: string) => {
@@ -90,7 +91,7 @@ const handleArticle = () => {
                 <!-- 标题 -->
                 <input type="text" placeholder="请输入文章标题" class="head" v-model="head">
                 <!-- 正文 -->
-                <textarea name="" id="" class="article" placeholder="请输入正文" v-model="paragraph"></textarea>
+                <textarea name="" id="" class="article" placeholder="请输入正文,#用于图片添加" v-model="paragraph"></textarea>
             </form>
         </div>
         <!-- 添加图片 -->

@@ -18,6 +18,7 @@ const { user, articleList } = storeToRefs(articleStore)
 const id = +route.params.id
 //对文章进行匹配
 const article = articleList.value.find(item => item.id === id) || new articleClass('加载失败', ['404 NOT FOUND'], user.value as userClass, '1949/10/01 12:00:00', [], testImage, Math.random())
+console.log(article)
 </script>
 <template>
     <div class="all">
@@ -28,11 +29,11 @@ const article = articleList.value.find(item => item.id === id) || new articleCla
                 <span class="user">{{ `${article.user.userName} ${article.date}` }}</span>
             </div>
             <div class="board">
-                <div class="body">
-                    <p v-for="(item, index) in article.article" :key="item">
-                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                        {{ item }}</p>
-                    <img :src="item" alt="" v-for="(item, index) in article.image" :key="item">
+                <div class="body" v-for="(item, index) in article.article" :key="item">
+                    <pre>
+                        {{ item }}
+                    </pre>
+                    <img :src="subIndex===index?subItem:''" alt="" v-for="(subItem, subIndex) in article.image" :key="item">
                 </div>
             </div>
         </div>
@@ -86,8 +87,14 @@ const article = articleList.value.find(item => item.id === id) || new articleCla
                 padding-left: 10%;
                 width: 80%;
 
-                p {
+                pre {
+                    margin-left: 2em;
                     margin-bottom: 10px;
+                    white-space: pre-wrap;
+                    font-size: 20px;
+                }
+                img{
+                    max-width: 100%;
                 }
             }
         }
