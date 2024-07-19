@@ -84,6 +84,7 @@ onMounted(() => {
     background-color: white;
     .name {
         width: 20%;
+        min-width: 200px;
         height: 50px;
         font-size: 24px;
         font-weight: 600;
@@ -94,6 +95,7 @@ onMounted(() => {
 
     .tabList {
         width: 5%;
+        min-width: 50px;
         height: 30px;
         margin-left: 10px;
         cursor: pointer;

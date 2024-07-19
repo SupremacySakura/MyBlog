@@ -73,7 +73,7 @@ const turnToShowPage = (id: number) => {
             <template v-slot:content>
                 <!-- 标题 -->
                 <p class="head" @click="turnToShowPage(item.id)">{{ item.head }}</p>
-                <p class="body">{{ item.article[0] }}</p>
+                <p class="body" v-html="item.article"></p>
                 <div class="news">
                     <!-- 头像 -->
                     <img :src="item.user.userHeadPortrait" alt="" class="headPortrait">
@@ -83,7 +83,7 @@ const turnToShowPage = (id: number) => {
                 <button class="delete" @click="handleDelete(item.id)">x</button>
             </template>
         </Card>
-
+        <div v-if="articleList.length===0" class="noArticle">作者还未发布任何文章哟...</div>
     </div>
 </template>
 <style scoped lang="less">
@@ -93,7 +93,7 @@ const turnToShowPage = (id: number) => {
     display: flex;
     align-items: start;
     flex-direction: column;
-
+    min-height: 100px;
     .card {
         position: relative;
         justify-content: start;
@@ -159,6 +159,14 @@ const turnToShowPage = (id: number) => {
             border: 1px solid rgba(0, 0, 0, 0.5);
         }
     }
-
+    .noArticle{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        font-weight: 600;
+    }
 }
 </style>

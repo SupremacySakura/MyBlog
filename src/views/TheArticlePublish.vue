@@ -33,11 +33,12 @@ const imageUrl = ref<string[]>([])
 //标题
 const head = ref<string>('')
 //正文
-const textArea = ref(null)
-const paragraph = ref<string>('')
-const article = computed(() => {
-    return paragraph.value.split('#')
-})
+const editor = ref<HTMLDivElement | null>(null)
+const article =ref<string>('')
+//绑定输入事件
+const onInput = () => {
+    article.value = editor.value?.innerHTML as string
+}
 //添加图片函数
 const addImage = (event: any, type: string) => {
     const file = event.target.files[0];
@@ -49,6 +50,22 @@ const addImage = (event: any, type: string) => {
                     coverUrl.value = e.target.result as string
                 } else if (type === 'image') {
                     imageUrl.value.push(e.target.result as string)
+                    //将图片添加进入文章区
+                    const imgNode = document.createElement('img')
+                    imgNode.src =imageUrl.value[imageUrl.value.length-1]
+                    imgNode.style.maxWidth='100%'
+                    editor.value?.appendChild(imgNode)
+                    article.value = editor.value?.innerHTML as string
+                    if(editor.value!=null){
+                        const startHeight = editor.value.offsetHeight
+                        const addHeight = imgNode.offsetHeight
+                        editor.value.style.height = `${startHeight + addHeight+200}px`
+                        //插入新的可输入区
+                        const textNode = document.createElement('div')
+                        textNode.contentEditable ='true'
+                        textNode.style.minHeight = '10px'
+                        editor.value?.appendChild(textNode)
+                    }
                 }
             }
         }
@@ -67,7 +84,7 @@ const handleArticle = () => {
         })
         return
     }
-    if (paragraph.value === '') {
+    if (article.value === '') {
         ElNotification({
             title: 'Warning',
             message: '文章不能为空',
@@ -91,7 +108,8 @@ const handleArticle = () => {
                 <!-- 标题 -->
                 <input type="text" placeholder="请输入文章标题" class="head" v-model="head">
                 <!-- 正文 -->
-                <textarea name="" id="" class="article" placeholder="请输入正文,#用于图片添加" v-model="paragraph"></textarea>
+                <div contenteditable="true" class="article"  ref="editor" @input="onInput">
+                </div>
             </form>
         </div>
         <!-- 添加图片 -->
@@ -162,10 +180,9 @@ const handleArticle = () => {
             .article {
                 width: 100%;
                 min-height: 700px;
+                font-size: 16px;
                 border: none;
                 outline: none;
-                resize: none;
-                font-size: 16px;
             }
         }
     }
@@ -250,5 +267,8 @@ const handleArticle = () => {
 
 .hidden {
     display: none;
+}
+.higher {
+    font-size: 30px;
 }
 </style>
