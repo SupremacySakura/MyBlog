@@ -74,6 +74,8 @@ const addImage = (event: any, type: string) => {
         alert('Please select an image file.')
     }
 }
+//摘要
+const digest = ref<string>('')
 //发布文章函数
 const handleArticle = () => {
     if (head.value === '') {
@@ -92,8 +94,16 @@ const handleArticle = () => {
         })
         return
     }
+    if (digest.value===''){
+        ElNotification({
+            title: 'Warning',
+            message: '摘要不能为空',
+            type: 'warning',
+        })
+        return
+    }
     const date = dayjs().format('YYYY/MM/DD HH:mm:ss')
-    const articleItem: articleClass = new articleClass(head.value, article.value, user.value as userClass, date, imageUrl.value, coverUrl.value, Math.random())
+    const articleItem: articleClass = new articleClass(head.value,digest.value, article.value, user.value as userClass, date, imageUrl.value, coverUrl.value, Math.random())
     publishArticle(articleItem)
     //跳转到文章页
     router.replace({ name: 'article' })
@@ -108,12 +118,17 @@ const handleArticle = () => {
                 <!-- 标题 -->
                 <input type="text" placeholder="请输入文章标题" class="head" v-model="head">
                 <!-- 正文 -->
-                <div contenteditable="true" class="article"  ref="editor" @input="onInput">
+                <div contenteditable="true" class="article" ref="editor" @input="onInput">
                 </div>
             </form>
         </div>
-        <!-- 添加图片 -->
+        <!-- 添加其他 -->
         <div class="set">
+            <!-- 添加摘要 -->
+            <div class="digest">
+                <span>添加摘要</span>
+                <textarea v-model="digest"></textarea>
+            </div>
             <!-- 文章封面 -->
             <div class="cover">
                 <label for="chooseCover" class="button">
@@ -133,7 +148,6 @@ const handleArticle = () => {
                 <div class="articleImageList">
                     <img :src="item" alt="" v-for="(item, index) in imageUrl" class="articleImage">
                 </div>
-
             </div>
         </div>
         <div class="utils">
@@ -196,6 +210,21 @@ const handleArticle = () => {
         flex-direction: column;
         align-items: center;
         margin-bottom: 50px;
+        .digest{
+            display: flex;
+            align-items: center;
+            width: 80%;
+            min-height: 250px;
+            span{
+                margin-right: 10px;
+            }
+            textarea{
+                width: 60%;
+                height: 100px;
+                resize: none;
+            }
+            border-bottom: 1px solid black;
+        }
         .cover {
             display: flex;
             align-items: center;

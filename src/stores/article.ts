@@ -14,7 +14,7 @@ export const useArticleStore = defineStore('article', () => {
   //文章列表
   const articleList = ref<articleClass[]>([])
   articleList.value = [
-    new articleClass('测试文章', '这是一片测试文章', user.value, '2024/7/12 15:44:35', [], testImage, 2),
+    new articleClass('测试文章', '这是一片测试文章','这是一片测试文章', user.value, '2024/7/12 15:44:35', [], testImage, 2),
   ]
   const publishArticle = (item: articleClass) => {
     articleList.value.unshift(item)

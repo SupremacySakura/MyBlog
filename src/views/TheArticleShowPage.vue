@@ -17,7 +17,7 @@ const { user, articleList } = storeToRefs(articleStore)
 //保存传递过来的id
 const id = +route.params.id
 //对文章进行匹配
-const article = articleList.value.find(item => item.id === id) || new articleClass('加载失败', '404 NOT FOUND', user.value as userClass, '1949/10/01 12:00:00', [], testImage, Math.random())
+const article = articleList.value.find(item => item.id === id) || new articleClass('加载失败','加载失败', '404 NOT FOUND', user.value as userClass, '1949/10/01 12:00:00', [], testImage, Math.random())
 console.log('a',article.article)
 </script>
 <template>

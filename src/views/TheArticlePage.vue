@@ -73,7 +73,7 @@ const turnToShowPage = (id: number) => {
             <template v-slot:content>
                 <!-- 标题 -->
                 <p class="head" @click="turnToShowPage(item.id)">{{ item.head }}</p>
-                <p class="body" v-html="item.article"></p>
+                <p class="body" >{{ item.digest }}</p>
                 <div class="news">
                     <!-- 头像 -->
                     <img :src="item.user.userHeadPortrait" alt="" class="headPortrait">
