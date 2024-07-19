@@ -110,9 +110,43 @@ const handleArticle = () => {
     setIsActive(1)
     setNeedImage(true)
 }
+//头部工具栏
+import { ElMessage } from 'element-plus'
+import {
+    ArrowDown,
+    Check,
+} from '@element-plus/icons-vue'
+//字体大小
+const fontSizeList = [12,14,16,18,20,22,24,26,28,30]
+const fontSizeNow = 16
+const handleCommand = (command: number ) => {
+    const textNode = document.createElement('div')
+    textNode.contentEditable = 'true'
+    textNode.style.minHeight = '10px'
+    textNode.style.minWidth = '10px'
+    textNode.style.display = 'inline-block'
+    textNode.style.fontSize = `${command}px`
+    editor.value?.appendChild(textNode)
+}
 </script>
 <template>
     <div class="publishPage">
+        <div class="textUtils">
+            <!-- 字号 -->
+            <el-dropdown @command="handleCommand">
+                <span class="el-dropdown-link" :style="{outline:'none'}">
+                    字号<el-icon class="el-icon--right"><arrow-down /></el-icon>
+                </span>
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <el-dropdown-item :command="item" divided v-for="item in fontSizeList" :key="item">
+                            {{ item }}
+                        </el-dropdown-item>
+
+                    </el-dropdown-menu>
+                </template>
+            </el-dropdown>
+        </div>
         <div class="board">
             <form action="">
                 <!-- 标题 -->
@@ -164,7 +198,18 @@ const handleArticle = () => {
     display: flex;
     align-items: center;
     flex-direction: column;
-
+    .textUtils {
+            background-color: #f5f5f5;
+            width: 100%;
+            height: 50px;
+            position: sticky;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top: 1px solid black;
+            top: 50px;
+        }
     .board {
         background-color: white;
         width: 60%;
@@ -300,4 +345,5 @@ const handleArticle = () => {
 .higher {
     font-size: 30px;
 }
+
 </style>
