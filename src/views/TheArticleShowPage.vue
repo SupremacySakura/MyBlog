@@ -11,6 +11,7 @@ const route = useRoute()
 //导入仓库
 import { storeToRefs } from 'pinia'
 import { useArticleStore } from '@/stores/article'
+import { onMounted } from 'vue'
 const articleStore = useArticleStore()
 //导入文章
 const { user, articleList } = storeToRefs(articleStore)
@@ -18,7 +19,15 @@ const { user, articleList } = storeToRefs(articleStore)
 const id = +route.params.id
 //对文章进行匹配
 const article = articleList.value.find(item => item.id === id) || new articleClass('加载失败','加载失败', '404 NOT FOUND', user.value as userClass, '1949/10/01 12:00:00', [], testImage, Math.random())
-console.log('a',article.article)
+//对文章内容进行处理,去除文章的可编辑性
+const cutString = 'contenteditable="true"'
+//渲染文章
+const content = ref<HTMLDivElement|null>(null)
+onMounted(()=>{
+    if(content.value!=null){
+        content.value.innerHTML = article.article.split(cutString).join('')
+    }
+})
 </script>
 <template>
     <div class="all">
@@ -29,7 +38,7 @@ console.log('a',article.article)
                 <span class="user">{{ `${article.user.userName} ${article.date}` }}</span>
             </div>
             <div class="board">
-                <div v-html="article.article" class="body"></div>
+                <div class="body" ref="content"></div>
             </div>
         </div>
     </div>
@@ -89,4 +98,5 @@ console.log('a',article.article)
         }
     }
 }
+
 </style>

@@ -152,7 +152,7 @@ const handleCommand = (command: number ) => {
                 <!-- 标题 -->
                 <input type="text" placeholder="请输入文章标题" class="head" v-model="head">
                 <!-- 正文 -->
-                <div contenteditable="true" class="article" ref="editor" @input="onInput">
+                <div contenteditable='true' class="article" ref="editor" @input="onInput">
                 </div>
             </form>
         </div>
