@@ -111,42 +111,43 @@ const handleArticle = () => {
     setNeedImage(true)
 }
 //头部工具栏
-import { ElMessage } from 'element-plus'
-import {
-    ArrowDown,
-    Check,
-} from '@element-plus/icons-vue'
-//字体大小
-const fontSizeList = [12,14,16,18,20,22,24,26,28,30]
-const fontSizeNow = 16
-const handleCommand = (command: number ) => {
+//导入头部工具栏
+import TheTabUtils from '@/components/TheTabUtils.vue'
+//修改字体函数
+const handleChangeText = (command: number|string,type:string) => {
     const textNode = document.createElement('div')
     textNode.contentEditable = 'true'
     textNode.style.minHeight = '10px'
     textNode.style.minWidth = '10px'
     textNode.style.display = 'inline-block'
-    textNode.style.fontSize = `${command}px`
-    editor.value?.appendChild(textNode)
+    if(type==='number'){
+        textNode.style.fontSize = `${command}px`
+    }else if (type==='color'){
+        textNode.style.color = command as string
+    }
+    
+    //获取最后一个子元素
+    const lastChild = editor.value?.lastElementChild as HTMLDivElement
+    //判断是否有子元素,如果没有则添加节点
+    if(!lastChild){
+        editor.value?.appendChild(textNode)
+    }else{
+        //判断最后一个子元素是否为空,如果为空则直接修改,如果不为空则新增一个节点
+        if(lastChild.innerHTML===''){
+            if (type === 'number') {
+                lastChild.style.fontSize = `${command}px`
+            } else if (type === 'color') {
+                lastChild.style.fontSize = command as string
+            }
+        }else{
+            editor.value?.appendChild(textNode)
+        }
+    }
 }
 </script>
 <template>
     <div class="publishPage">
-        <div class="textUtils">
-            <!-- 字号 -->
-            <el-dropdown @command="handleCommand">
-                <span class="el-dropdown-link" :style="{outline:'none'}">
-                    字号<el-icon class="el-icon--right"><arrow-down /></el-icon>
-                </span>
-                <template #dropdown>
-                    <el-dropdown-menu>
-                        <el-dropdown-item :command="item" divided v-for="item in fontSizeList" :key="item">
-                            {{ item }}
-                        </el-dropdown-item>
-
-                    </el-dropdown-menu>
-                </template>
-            </el-dropdown>
-        </div>
+        <TheTabUtils @handleChangeText="handleChangeText"></TheTabUtils>
         <div class="board">
             <form action="">
                 <!-- 标题 -->
@@ -199,18 +200,6 @@ const handleCommand = (command: number ) => {
     display: flex;
     align-items: center;
     flex-direction: column;
-    .textUtils {
-            background-color: #f5f5f5;
-            width: 100%;
-            height: 50px;
-            position: sticky;
-            bottom: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-top: 1px solid black;
-            top: 50px;
-        }
     .board {
         background-color: white;
         width: 60%;
