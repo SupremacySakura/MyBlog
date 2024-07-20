@@ -7,6 +7,11 @@ import defaultCover from '@/assets/images/defaultCover.jpg'
 import { storeToRefs } from 'pinia'
 import { useArticleStore } from '@/stores/article'
 const articleStore = useArticleStore()
+//导入发布文章仓库
+import { usePublishStore } from '@/stores/publish'
+const publishStore = usePublishStore()
+const { nowFontSize, nowFontColor, nowFontWight } = storeToRefs(publishStore)
+const { nowText } = publishStore
 //导入导航栏仓库
 import { useTabStore } from '@/stores/tab'
 const tabStore = useTabStore()
@@ -113,17 +118,29 @@ const handleArticle = () => {
 //头部工具栏
 //导入头部工具栏
 import TheTabUtils from '@/components/TheTabUtils.vue'
-//修改字体函数
-const handleChangeText = (command: number|string,type:string) => {
+import { onMounted } from 'vue'
+//创造默认节点函数
+const getTextNode=()=>{
     const textNode = document.createElement('div')
     textNode.contentEditable = 'true'
     textNode.style.minHeight = '10px'
     textNode.style.minWidth = '10px'
     textNode.style.display = 'inline-block'
+    textNode.style.fontSize = '16px'
+    textNode.style.color = '#0b0115'
+    textNode.style.fontWeight = '400'
+    textNode.addEventListener('click', nowText)
+    return textNode
+}
+//修改字体函数 字号 字体颜色 字体粗细
+const handleChangeText = (command: number|string,type:string) => {
+    const textNode = getTextNode()
     if(type==='number'){
         textNode.style.fontSize = `${command}px`
     }else if (type==='color'){
         textNode.style.color = command as string
+    }else if(type==='weight'){
+        textNode.style.fontWeight = command as string
     }
     
     //获取最后一个子元素
@@ -137,17 +154,27 @@ const handleChangeText = (command: number|string,type:string) => {
             if (type === 'number') {
                 lastChild.style.fontSize = `${command}px`
             } else if (type === 'color') {
-                lastChild.style.fontSize = command as string
+                lastChild.style.color = command as string
+            } else if (type === 'weight') {
+                lastChild.style.fontWeight = command as string
             }
         }else{
             editor.value?.appendChild(textNode)
         }
     }
 }
+onMounted(()=>{
+    const textNode = getTextNode()
+    editor.value?.appendChild(textNode)
+})
+
+
 </script>
 <template>
     <div class="publishPage">
-        <TheTabUtils @handleChangeText="handleChangeText"></TheTabUtils>
+        <TheTabUtils @handleChangeText="handleChangeText" nowFontSize="nowFontSize" nowFontColor="nowFontColor"
+            nowFontWight="nowFontWight">
+        </TheTabUtils>
         <div class="board">
             <form action="">
                 <!-- 标题 -->
@@ -230,6 +257,7 @@ const handleChangeText = (command: number|string,type:string) => {
                 width: 100%;
                 min-height: 700px;
                 font-size: 16px;
+                font-weight: 400;
                 border: none;
                 outline: none;
             }
