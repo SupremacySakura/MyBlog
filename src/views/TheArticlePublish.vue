@@ -192,6 +192,7 @@ const handleCommand = (command: number ) => {
 <style scoped lang="less">
 .publishPage {
     margin-top: 50px;
+    min-width: 1200px;
     width: 100%;
     min-height: 1000px;
     background-color: #eceff1;

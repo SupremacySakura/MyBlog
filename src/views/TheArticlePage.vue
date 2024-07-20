@@ -100,7 +100,7 @@ const turnToShowPage = (id: number) => {
         width: 65%;
         margin-top: 20px;
         margin-left: 8%;
-
+        min-width: 800px;
         .cover {
             width: 400px;
             height: 270px;
