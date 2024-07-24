@@ -7,6 +7,7 @@ import About from '@/views/TheAboutPage.vue'
 import Show from '@/views/TheArticleShowPage.vue'
 import Publish from '@/views/TheArticlePublish.vue'
 import Login from '@/views/TheLogin.vue'
+
 export const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -38,7 +39,8 @@ export const router = createRouter({
     {
       path: '/publish',
       name: 'publish',
-      component: Publish
+      component: Publish,
+      meta: { requiresAuth: true }
     },
     {
       path: '/login',
@@ -47,7 +49,37 @@ export const router = createRouter({
     },
     {
       path: '/', redirect: '/home'
-    }
-
+    },
   ]
+})
+//导入仓库
+import { storeToRefs } from 'pinia'
+// 创建 Pinia 实例
+import { createPinia } from 'pinia'
+const pinia = createPinia()
+//用户仓库
+import { useArticleStore } from '@/stores/article'
+const articleStore = useArticleStore(pinia)
+const { isLoggedIn } = storeToRefs(articleStore)
+//导航栏仓库
+import { useTabStore } from '@/stores/tab'
+const tabStore = useTabStore(pinia)
+const { } = storeToRefs(tabStore)
+const { setIsActive, setNeedImage } = tabStore
+//跳转页面函数
+const turnToPage = (src: string, id: number, isNeedImage: boolean) => {
+  router.replace({ name: src })
+  setIsActive(id)
+  setNeedImage(isNeedImage)
+}
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!isLoggedIn.value) {
+      turnToPage('home',0,true)
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })

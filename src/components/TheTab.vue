@@ -18,9 +18,7 @@ const { setIsActive, setNeedImage } = tabStore
 import { useArticleStore } from '@/stores/article'
 const articleStore = useArticleStore()
 const { userMessage } = storeToRefs(articleStore)
-const { logout,getUser } = articleStore
-//用户
-const user = ref()
+const { logout } = articleStore
 //导航高亮显示
 const backgroundImageList: string[] = [
     backgroundImage2,
@@ -34,9 +32,8 @@ const turnToPage = (src: string, id: number, isNeedImage: boolean) => {
     setIsActive(id)
     setNeedImage(isNeedImage)
 }
-const tab = ref()
 //退出登录
-const handleLogout = ()=>{
+const handleLogout = () => {
     logout()
 }
 //初始化
@@ -56,7 +53,7 @@ onMounted(() => {
         </el-carousel>
     </div>
     <!-- 导航栏 -->
-    <div class="tab" v-if="isActive!==-2">
+    <div class="tab" v-if="isActive !== -2">
         <span class="name">
             余心知秋的博客
         </span>
@@ -66,108 +63,115 @@ onMounted(() => {
         </div>
         <div class="user" v-if="userMessage.uid">
             <img :src="userMessage.userHeadPortrait" class="userHeadPortrait">
-            <span>{{ userMessage. userName }}</span>
+            <span>{{ userMessage.userName }}</span>
         </div>
         <div class="utils">
             <div class="login" @click="turnToPage('login', -2, false)" v-if="!userMessage.uid">登录</div>
             <div class="logout" @click="handleLogout" v-else>注销</div>
-            <div class="publish" @click="turnToPage('publish', -1, false)" v-if="userMessage.type===1">发布文章</div>
+            <div class="publish" @click="turnToPage('publish', -1, false)" v-if="userMessage.type === 1">发布文章</div>
         </div>
     </div>
 </template>
 
 <style scoped lang="less">
-
 .tabBackgroundImage {
     width: 100%;
-                height: 600px;
-                margin-top: 50px;
-                img {
-                width: 100%;
-                height: 100%;
-                }
-                }
+    height: 600px;
+    margin-top: 50px;
 
-                .tab {
-                display: flex;
-                width: 100%;
-                min-width: 900px;
-                height: 50px;
-                position:fixed ;
-                top: 0;
-                color: black;
-                background-color: white;
-                .name {
-                width: 20%;
-                min-width: 200px;
-                height: 50px;
-                font-size: 24px;
-                font-weight: 600;
-                margin-left: 10px;
-                position: relative;
-                line-height: 50px;
-                }
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}
 
-                .tabList {
-                width: 5%;
-                min-width: 50px;
-                height: 30px;
-                margin-left: 10px;
-                cursor: pointer;
-                position: relative;
-                top: 20px;
-                font-size: 16px;
-                }
-                .tabList:hover{
-                color: #439388;
-                }
-                .user{
-                margin-left: 50px;
-                width: 200px;
-                height: 50px;
-                display: flex;
-                align-items: center;
-                justify-content: space-around;
-                .userHeadPortrait{
-                width: 50px;
-                border-radius: 50px;
-                }
-                }
-                .utils {
-                width: 200px;
-                height: 50px;
-                position: absolute;
-                display: flex;
-                align-items: center;
-                justify-content: space-around;
-                right: 0px;
-                .logout,
-                .login {
-                width: 80px;
-                height: 40px;
-                line-height: 40px;
-                border-radius: 25px;
-                background-color: #202b2d;
-                color: white;
-                text-align: center;
-                cursor: pointer;
-                }
-                .publish {
-                width: 100px;
-                height: 40px;
-                line-height: 40px;
-                border-radius: 25px;
-                background-color: #202b2d;
-                color: white;
-                text-align: center;
-                cursor: pointer;
-                }
-                }
+.tab {
+    display: flex;
+    width: 100%;
+    min-width: 900px;
+    height: 50px;
+    position: fixed;
+    top: 0;
+    color: black;
+    background-color: white;
 
-                }
+    .name {
+        width: 20%;
+        min-width: 200px;
+        height: 50px;
+        font-size: 24px;
+        font-weight: 600;
+        margin-left: 10px;
+        position: relative;
+        line-height: 50px;
+    }
+
+    .tabList {
+        width: 5%;
+        min-width: 50px;
+        height: 30px;
+        margin-left: 10px;
+        cursor: pointer;
+        position: relative;
+        top: 20px;
+        font-size: 16px;
+    }
+
+    .tabList:hover {
+        color: #439388;
+    }
+
+    .user {
+        margin-left: 50px;
+        width: 200px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+
+        .userHeadPortrait {
+            width: 50px;
+            border-radius: 50px;
+        }
+    }
+
+    .utils {
+        width: 200px;
+        height: 50px;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        right: 0px;
+
+        .logout,
+        .login {
+            width: 80px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 25px;
+            background-color: #202b2d;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .publish {
+            width: 100px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 25px;
+            background-color: #202b2d;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+        }
+    }
+
+}
 
 
-                .active {
-                color: #439388;
-                }
+.active {
+    color: #439388;
+}
 </style>

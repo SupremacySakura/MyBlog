@@ -4,7 +4,9 @@ import { tabListClass } from '@/classes/tabClass'
 export const useTabStore = defineStore('tab', () => {
     const isActive = ref(0)
     const setIsActive = (id: number) => {
+        console.log(id)
         isActive.value = id
+        console.log(isActive.value)
     }
     const needImage = ref(true)
     const setNeedImage = (isNeed: boolean) => {
