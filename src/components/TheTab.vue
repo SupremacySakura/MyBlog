@@ -3,19 +3,25 @@
 import { useRouter } from 'vue-router'
 const router = useRouter()
 import { ref, onMounted } from 'vue'
-//导入导航类
-import { tabListClass } from '@/classes/tabClass'
 //背景图
 import backgroundImage2 from '@/assets/images/background2.jpg'
 import backgroundImage5 from '@/assets/images/background5.jpg'
 import backgroundImage7 from '@/assets/images/background7.jpg'
 //导入仓库
 import { storeToRefs } from 'pinia'
+//导航栏仓库
 import { useTabStore } from '@/stores/tab'
 const tabStore = useTabStore()
-//导航高亮显示
 const { isActive, tabList, needImage } = storeToRefs(tabStore)
 const { setIsActive, setNeedImage } = tabStore
+//用户仓库
+import { useArticleStore } from '@/stores/article'
+const articleStore = useArticleStore()
+const { userMessage } = storeToRefs(articleStore)
+const { logout,getUser } = articleStore
+//用户
+const user = ref()
+//导航高亮显示
 const backgroundImageList: string[] = [
     backgroundImage2,
     backgroundImage5,
@@ -24,17 +30,20 @@ const backgroundImageList: string[] = [
 //导航栏
 //跳转页面函数
 const turnToPage = (src: string, id: number, isNeedImage: boolean) => {
-    console.log('isNeedImage', isNeedImage)
-    console.log('id', id)
     router.replace({ name: src })
     setIsActive(id)
     setNeedImage(isNeedImage)
 }
 const tab = ref()
+//退出登录
+const handleLogout = ()=>{
+    logout()
+}
 //初始化
 onMounted(() => {
-
+    console.log(userMessage.value)
 })
+
 </script>
 
 <template>
@@ -47,7 +56,7 @@ onMounted(() => {
         </el-carousel>
     </div>
     <!-- 导航栏 -->
-    <div class="tab">
+    <div class="tab" v-if="isActive!==-2">
         <span class="name">
             余心知秋的博客
         </span>
@@ -55,80 +64,110 @@ onMounted(() => {
             class="tabList" :class="{ active: isActive === item.id }">
             {{ item.label }}
         </div>
+        <div class="user" v-if="userMessage.uid">
+            <img :src="userMessage.userHeadPortrait" class="userHeadPortrait">
+            <span>{{ userMessage. userName }}</span>
+        </div>
         <div class="utils">
-            <div class="publish" @click="turnToPage('publish', -1, false)">发布文章</div>
+            <div class="login" @click="turnToPage('login', -2, false)" v-if="!userMessage.uid">登录</div>
+            <div class="logout" @click="handleLogout" v-else>注销</div>
+            <div class="publish" @click="turnToPage('publish', -1, false)" v-if="userMessage.type===1">发布文章</div>
         </div>
     </div>
 </template>
 
 <style scoped lang="less">
-// 背景图
+
 .tabBackgroundImage {
     width: 100%;
-    height: 600px;
-    margin-top: 50px;
-    img {
-        width: 100%;
-        height: 100%;
-    }
-}
+                height: 600px;
+                margin-top: 50px;
+                img {
+                width: 100%;
+                height: 100%;
+                }
+                }
 
-//导航栏
-.tab {
-    display: flex;
-    width: 100%;
-    height: 50px;
-    position:fixed ;
-    top: 0;
-    color: black;
-    background-color: white;
-    .name {
-        width: 20%;
-        min-width: 200px;
-        height: 50px;
-        font-size: 24px;
-        font-weight: 600;
-        margin-left: 10px;
-        position: relative;
-        line-height: 50px;
-    }
+                .tab {
+                display: flex;
+                width: 100%;
+                min-width: 900px;
+                height: 50px;
+                position:fixed ;
+                top: 0;
+                color: black;
+                background-color: white;
+                .name {
+                width: 20%;
+                min-width: 200px;
+                height: 50px;
+                font-size: 24px;
+                font-weight: 600;
+                margin-left: 10px;
+                position: relative;
+                line-height: 50px;
+                }
 
-    .tabList {
-        width: 5%;
-        min-width: 50px;
-        height: 30px;
-        margin-left: 10px;
-        cursor: pointer;
-        position: relative;
-        top: 20px;
-        font-size: 16px;
-    }
-    .tabList:hover{
-        color: #439388;
-    }
+                .tabList {
+                width: 5%;
+                min-width: 50px;
+                height: 30px;
+                margin-left: 10px;
+                cursor: pointer;
+                position: relative;
+                top: 20px;
+                font-size: 16px;
+                }
+                .tabList:hover{
+                color: #439388;
+                }
+                .user{
+                margin-left: 50px;
+                width: 200px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                .userHeadPortrait{
+                width: 50px;
+                border-radius: 50px;
+                }
+                }
+                .utils {
+                width: 200px;
+                height: 50px;
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                right: 0px;
+                .logout,
+                .login {
+                width: 80px;
+                height: 40px;
+                line-height: 40px;
+                border-radius: 25px;
+                background-color: #202b2d;
+                color: white;
+                text-align: center;
+                cursor: pointer;
+                }
+                .publish {
+                width: 100px;
+                height: 40px;
+                line-height: 40px;
+                border-radius: 25px;
+                background-color: #202b2d;
+                color: white;
+                text-align: center;
+                cursor: pointer;
+                }
+                }
 
-    .utils {
-        .publish {
-            width: 100px;
-            height: 40px;
-            line-height: 40px;
-            position: absolute;
-            border-radius: 25px;
-            background-color: #202b2d;
-            color: white;
-            text-align: center;
-            top: 5px;
-            right: 10px;
-            cursor: pointer;
-        }
-    }
-
-}
+                }
 
 
-//导航高亮类
-.active {
-    color: #439388;
-}
-
+                .active {
+                color: #439388;
+                }
 </style>

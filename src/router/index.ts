@@ -6,6 +6,7 @@ import Share from '@/views/TheSharePage.vue'
 import About from '@/views/TheAboutPage.vue'
 import Show from '@/views/TheArticleShowPage.vue'
 import Publish from '@/views/TheArticlePublish.vue'
+import Login from '@/views/TheLogin.vue'
 export const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -38,6 +39,11 @@ export const router = createRouter({
       path: '/publish',
       name: 'publish',
       component: Publish
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
     },
     {
       path: '/', redirect: '/home'

@@ -16,7 +16,7 @@ const { nowText } = publishStore
 import { useTabStore } from '@/stores/tab'
 const tabStore = useTabStore()
 //导入文章
-const { user } = storeToRefs(articleStore)
+const { userMessage } = storeToRefs(articleStore)
 const { publishArticle } = articleStore
 //导入文章类
 import { articleClass } from '@/classes/articleClass'
@@ -108,7 +108,7 @@ const handleArticle = () => {
         return
     }
     const date = dayjs().format('YYYY/MM/DD HH:mm:ss')
-    const articleItem: articleClass = new articleClass(head.value,digest.value, article.value, user.value as userClass, date, imageUrl.value, coverUrl.value, Math.random())
+    const articleItem: articleClass = new articleClass(head.value,digest.value, article.value, userMessage.value as userClass, date, imageUrl.value, coverUrl.value, Math.random())
     publishArticle(articleItem)
     //跳转到文章页
     router.replace({ name: 'article' })
