@@ -13,7 +13,7 @@ import { storeToRefs } from 'pinia'
 import { useTabStore } from '@/stores/tab'
 const tabStore = useTabStore()
 const { isActive, tabList, needImage } = storeToRefs(tabStore)
-const { setIsActive, setNeedImage } = tabStore
+const { setIsActive, setNeedImage,getSrc } = tabStore
 //用户仓库
 import { useArticleStore } from '@/stores/article'
 const articleStore = useArticleStore()
@@ -35,10 +35,11 @@ const turnToPage = (src: string, id: number, isNeedImage: boolean) => {
 //退出登录
 const handleLogout = () => {
     logout()
+    turnToPage('home',0,true)
 }
 //初始化
 onMounted(() => {
-    console.log(userMessage.value)
+    turnToPage(getSrc(),isActive.value,needImage.value)
 })
 
 </script>

@@ -22,11 +22,50 @@ export const useTabStore = defineStore('tab', () => {
         new tabListClass(2, '分享', 'share', true),
         new tabListClass(3, '关于', 'about', true),
     ]
+    //获取地址
+    const getSrc = ()=>{
+        switch(isActive.value){
+            case 0 :
+                return 'home'
+            case 1 :
+                return 'article'
+            case 2 :
+                return 'share'
+            case 3 :
+                return 'about'
+            case -1 :
+                return 'publish'
+            case -2 :
+                return 'login'
+            default:
+                return 'home'        
+        }
+    }
+    const getId =(src:string)=>{
+        switch (src) {
+            case 'home':
+                return 0
+            case 'article':
+                return 1
+            case 'share':
+                return 2
+            case 'about':
+                return 3
+            case 'publish':
+                return -1
+            case 'login':
+                return -2
+            default:
+                return 0
+        }
+    }
     return {
         isActive,
         setIsActive,
         needImage,
         setNeedImage,
         tabList,
+        getSrc,
+        getId,
     }
 }, { persist: true })

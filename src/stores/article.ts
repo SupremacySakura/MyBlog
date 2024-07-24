@@ -68,6 +68,9 @@ export const useArticleStore = defineStore('article', () => {
   const isLoggedIn = computed(()=>{
     return !(userMessage.value.uid===''&&userMessage.value.userName===''&&userMessage.value.userHeadPortrait===userHeadPortrait&&userMessage.value.type===-1)
   })
+  const isWriter = computed(()=>{
+    return userMessage.value.type===1
+  })
   //文章列表
   const articleList = ref<articleClass[]>([])
   articleList.value = []
@@ -87,5 +90,6 @@ export const useArticleStore = defineStore('article', () => {
     getUser,
     userMessage,
     isLoggedIn,
+    isWriter,
   }
 }, { persist: true })

@@ -54,29 +54,33 @@ export const router = createRouter({
 })
 //导入仓库
 import { storeToRefs } from 'pinia'
-// 创建 Pinia 实例
-import { createPinia } from 'pinia'
-const pinia = createPinia()
 //用户仓库
 import { useArticleStore } from '@/stores/article'
-const articleStore = useArticleStore(pinia)
-const { isLoggedIn } = storeToRefs(articleStore)
 //导航栏仓库
 import { useTabStore } from '@/stores/tab'
-const tabStore = useTabStore(pinia)
-const { } = storeToRefs(tabStore)
-const { setIsActive, setNeedImage } = tabStore
-//跳转页面函数
-const turnToPage = (src: string, id: number, isNeedImage: boolean) => {
-  router.replace({ name: src })
-  setIsActive(id)
-  setNeedImage(isNeedImage)
-}
 router.beforeEach((to, from, next) => {
+  const articleStore = useArticleStore()
+  const { isWriter, userMessage } = storeToRefs(articleStore)
+  const tabStore = useTabStore()
+  const { isActive,needImage } = storeToRefs(tabStore)
+  const { setIsActive, setNeedImage,getSrc, getId } = tabStore
+  //跳转页面函数
+  const turnToPage = (src: string, id: number, isNeedImage: boolean) => {
+    router.replace({ name: src })
+    setIsActive(id)
+    setNeedImage(isNeedImage)
+  }
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!isLoggedIn.value) {
-      turnToPage('home',0,true)
+    if (!isWriter.value) {
+      if(getSrc()==='publish'){
+        //防止进入死循环
+        setIsActive(0)
+        setNeedImage(true)
+      }
+      turnToPage(getSrc(),isActive.value,needImage.value)
     } else {
+      setIsActive(getId(to.name as string))
+      setNeedImage(getId(to.name as string) >= 0)
       next()
     }
   } else {
