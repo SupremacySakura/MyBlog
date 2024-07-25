@@ -67,7 +67,7 @@ import { useTabStore } from '@/stores/tab'
 import { get } from 'lodash'
 router.beforeEach((to, from, next) => {
   const articleStore = useArticleStore()
-  const { isWriter, userMessage } = storeToRefs(articleStore)
+  const { isWriter, userMessage,isLoggedIn } = storeToRefs(articleStore)
   const tabStore = useTabStore()
   const { isActive,needImage } = storeToRefs(tabStore)
   const { setIsActive, setNeedImage,getSrc, getId } = tabStore
@@ -78,17 +78,33 @@ router.beforeEach((to, from, next) => {
     setNeedImage(isNeedImage)
   }
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!isWriter.value) {
-      if(getSrc()==='publish'||getSrc()==='user'){
+    //判断是否登录
+    if(!isLoggedIn.value){
+      //没登录
+      //访问不可访问的页面
+      if (getSrc() === 'publish' || getSrc() === 'user') {
         //防止进入死循环
-        setIsActive(0)
-        setNeedImage(true)
+        turnToPage('home', 0, true)
       }
-      turnToPage(getSrc(),isActive.value,needImage.value)
-    } else {
-      setIsActive(getId(to.name as string))
-      setNeedImage(getId(to.name as string) >= 0)
-      next()
+    }else{
+      //已登录
+      //判断是否为需要作者权限访问的页面
+      if(getSrc()==='publish'){
+        //是
+        //判断是否为作者
+        if(isWriter){
+          //是
+          next()
+        }else{
+          //不是
+          setIsActive(0)
+          setNeedImage(true)
+          turnToPage('home', 0, true)
+        }
+      }else{
+        //不需要作者权限
+        next()
+      }
     }
   } else {
     next()

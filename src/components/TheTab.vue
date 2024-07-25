@@ -32,6 +32,7 @@ const turnToPage = (src: string, id: number, isNeedImage: boolean) => {
     if(src==='article'){
         getArticleSearchList(search.value)
     }
+    console.log('src',src)
     //跳转前清空搜索栏
     search.value = ''
     router.replace({ name: src })

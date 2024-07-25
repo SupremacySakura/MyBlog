@@ -3,6 +3,7 @@
 import { storeToRefs } from 'pinia'
 //用户仓库
 import { useArticleStore } from '@/stores/article'
+import { computed } from 'vue';
 const articleStore = useArticleStore()
 const { userMessage } = storeToRefs(articleStore)
 const { changeUserHeadPortrait } = articleStore
@@ -22,6 +23,17 @@ const handleChangeUserHeadPortrait = (event: any) => {
         alert('Please select an image file.')
     }
 }
+const userType = computed(()=>{
+    switch (userMessage.value.type){
+        case 1:
+            return '管理员'
+        case 2:
+            return '访客'
+        default :
+            return '访客'
+    }
+   
+})
 </script>
 <template>
     <div class="user">
@@ -37,6 +49,7 @@ const handleChangeUserHeadPortrait = (event: any) => {
                 <div class="userNews">uid:{{ userMessage.uid }}</div>
                 <div class="userNews">用户名:{{ userMessage.userName }}</div>
                 <div class="userNews">账号:{{ userMessage.accounts }}</div>
+                <div class="userNews">权限:{{ userType }}</div>
             </div>
         </div>
     </div>
