@@ -1,17 +1,17 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 //导入文章类与用户类
-import { userClass, userMessageClass } from '@/classes/userClass'
+import { userClass } from '@/classes/userClass'
 import { articleClass } from '@/classes/articleClass'
 //导入头像
 import userHeadPortrait from '@/assets/images/userHeadPortrait.jpg'
-//导入测试封面图片
 export const useArticleStore = defineStore('article', () => {
   //用户
   const user = ref<userClass | null>(null)
   const userList = ref<userClass[]>([])
   userList.value =[
     new userClass('super123123301', '余心知秋','15310836616','2005' ,userHeadPortrait, 1),
+    new userClass('super123', '余心知秋2', '153', '2005', userHeadPortrait, 1),
     new userClass('fangke123123', '访客','12345678910','123456' ,userHeadPortrait, 2),
   ]
   //登录
@@ -103,6 +103,7 @@ export const useArticleStore = defineStore('article', () => {
   const deleteArticle = (id:number)=>{
     articleList.value=articleList.value.filter(item=>item.id!=id)
   }
+ 
   return {
     user,
     articleList,

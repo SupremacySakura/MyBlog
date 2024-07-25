@@ -2,7 +2,7 @@
 //导入useRouter函数
 import { useRouter } from 'vue-router'
 const router = useRouter()
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 //背景图
 import backgroundImage2 from '@/assets/images/background2.jpg'
 import backgroundImage5 from '@/assets/images/background5.jpg'
@@ -17,7 +17,7 @@ const { setIsActive, setNeedImage,getSrc } = tabStore
 //用户仓库
 import { useArticleStore } from '@/stores/article'
 const articleStore = useArticleStore()
-const { userMessage,articleSearchList } = storeToRefs(articleStore)
+const { userMessage } = storeToRefs(articleStore)
 const { logout,getArticleSearchList } = articleStore
 //导航高亮显示
 const backgroundImageList: string[] = [
@@ -32,7 +32,6 @@ const turnToPage = (src: string, id: number, isNeedImage: boolean) => {
     if(src==='article'){
         getArticleSearchList(search.value)
     }
-    console.log('src',src)
     //跳转前清空搜索栏
     search.value = ''
     router.replace({ name: src })
@@ -53,7 +52,6 @@ const handleSearch = ()=>{
 onMounted(() => {
     turnToPage(getSrc(),isActive.value,needImage.value)
 })
-
 </script>
 
 <template>
@@ -109,6 +107,7 @@ onMounted(() => {
     min-width: 1500px;
     height: 50px;
     position: fixed;
+    z-index: 1;
     top: 0;
     color: black;
     background-color: white;

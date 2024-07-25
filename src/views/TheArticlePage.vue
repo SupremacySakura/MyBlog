@@ -1,8 +1,5 @@
 <script setup lang="ts">
-//导入头像
-import userHeadPortrait from '@/assets/images/userHeadPortrait.jpg'
-//导入测试封面图片
-import testImage from '@/assets/images/test1.jpg'
+import { ref,nextTick } from 'vue'
 //导入卡片组件
 import Card from '@/components/TheCard.vue'
 //导入路由
@@ -10,17 +7,16 @@ import { useRouter } from 'vue-router';
 //导入仓库
 import { storeToRefs } from 'pinia'
 import { useArticleStore } from '@/stores/article'
-//导入文章类与用户类
-import { userClass } from '@/classes/userClass'
-import { articleClass } from '@/classes/articleClass'
 //导入删除弹窗
 import { ElMessage, ElMessageBox } from 'element-plus'
 const articleStore = useArticleStore()
-const { user, articleList, articleSearchList } = storeToRefs(articleStore)
+const { userMessage, articleList, articleSearchList } = storeToRefs(articleStore)
+const {  } = articleStore
 const tabStore = useTabStore()
-const { isActive } = storeToRefs(tabStore)
-const { setIsActive, setNeedImage } = tabStore
+const {  } = storeToRefs(tabStore)
+const {  setNeedImage } = tabStore
 import { useTabStore } from '@/stores/tab'
+import { computed } from 'vue';
 //删除文章
 const { deleteArticle } = useArticleStore()
 const  handleDelete = (id:number)=>{
@@ -63,10 +59,13 @@ const turnToShowPage = (id: number) => {
     router.replace({ name: 'show', params: { id: JSON.stringify(id) } })
     setNeedImage(false)
 }
+const articleListNow = computed(()=>{
+    return (articleSearchList ? articleSearchList.value : articleList.value) 
+})
 </script>
 <template>
     <div class="article" :style="{ height: `${articleList.length * 350}px` }">
-        <Card v-for="(item, index) in articleSearchList? articleSearchList: articleList" :key="item.id">
+        <Card v-for="(item, index) in articleListNow" :key="item.id" >
             <template v-slot:image>
                 <img :src="item.cover" alt="" class="cover">
             </template>
@@ -80,11 +79,11 @@ const turnToShowPage = (id: number) => {
                     <!-- 日期 -->
                     <span class="date">{{ `${item.user.userName} ${item.date}` }}</span>
                 </div>
-                <button class="delete" @click="handleDelete(item.id)">x</button>
+                <button class="delete" @click="handleDelete(item.id)" v-if="userMessage.uid===item.user.uid">x</button>
             </template>
         </Card>
         <div v-if="articleList.length===0" class="noArticle">作者还未发布任何文章哟...</div>
-        <div v-if="articleSearchList.length === 0" class="noArticle">未搜索到相关文章...</div>
+        <div v-if="articleSearchList.length === 0 && articleList.length !== 0" class="noArticle">未搜索到相关文章...</div>
     </div>
 </template>
 <style scoped lang="less">
