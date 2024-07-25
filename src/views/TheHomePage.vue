@@ -43,7 +43,7 @@ const imageList: imageListCLass[] = [
 .homePage {
     position: relative;
     background-color:#eceff1 ;
-
+    min-width: 1500px;
     img {
         width: 320px;
         height: 180px

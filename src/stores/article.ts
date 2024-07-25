@@ -50,6 +50,7 @@ export const useArticleStore = defineStore('article', () => {
         userName: '',
         userHeadPortrait: userHeadPortrait,
         type: -1,
+        accounts:''
       }
       return userMessage
     }
@@ -57,7 +58,8 @@ export const useArticleStore = defineStore('article', () => {
       uid: user.value?.uid,
       userName: user.value?.userName,
       userHeadPortrait: user.value?.userHeadPortrait,
-      type: user.value?.type
+      type: user.value?.type,
+      accounts:user.value?.accounts
     }
     return userMessage
 
@@ -82,6 +84,14 @@ export const useArticleStore = defineStore('article', () => {
   const getArticleSearchList = (label:string)=>{
     articleSearchList.value = articleList.value.filter((item)=>(item.article.includes(label)||item.head.includes(label)||item.digest.includes(label)))
   }
+  //修改头像
+  const changeUserHeadPortrait = (uid:string,src:string)=>{
+    const index =  userList.value.findIndex(item=>item.uid===uid)
+    userList.value[index].userHeadPortrait=src
+    if(user.value!=null){
+      user.value.userHeadPortrait = src
+    }
+  }
   const deleteArticle = (id:number)=>{
     articleList.value=articleList.value.filter(item=>item.id!=id)
   }
@@ -98,5 +108,6 @@ export const useArticleStore = defineStore('article', () => {
     isWriter,
     articleSearchList,
     getArticleSearchList,
+    changeUserHeadPortrait,
   }
 }, { persist: true })

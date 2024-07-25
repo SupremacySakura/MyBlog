@@ -7,7 +7,7 @@ import About from '@/views/TheAboutPage.vue'
 import Show from '@/views/TheArticleShowPage.vue'
 import Publish from '@/views/TheArticlePublish.vue'
 import Login from '@/views/TheLogin.vue'
-
+import User from '@/views/TheUser.vue'
 export const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -43,6 +43,12 @@ export const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: '/user',
+      name: 'user',
+      component: User,
+      meta: { requiresAuth: true }
+    },
+    {
       path: '/login',
       name: 'login',
       component: Login
@@ -58,6 +64,7 @@ import { storeToRefs } from 'pinia'
 import { useArticleStore } from '@/stores/article'
 //导航栏仓库
 import { useTabStore } from '@/stores/tab'
+import { get } from 'lodash'
 router.beforeEach((to, from, next) => {
   const articleStore = useArticleStore()
   const { isWriter, userMessage } = storeToRefs(articleStore)
@@ -72,7 +79,7 @@ router.beforeEach((to, from, next) => {
   }
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!isWriter.value) {
-      if(getSrc()==='publish'){
+      if(getSrc()==='publish'||getSrc()==='user'){
         //防止进入死循环
         setIsActive(0)
         setNeedImage(true)

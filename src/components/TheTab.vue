@@ -29,7 +29,9 @@ const backgroundImageList: string[] = [
 //跳转页面函数
 const turnToPage = (src: string, id: number, isNeedImage: boolean) => {
     //获取文章
-    getArticleSearchList(search.value)
+    if(src==='article'){
+        getArticleSearchList(search.value)
+    }
     //跳转前清空搜索栏
     search.value = ''
     router.replace({ name: src })
@@ -80,9 +82,10 @@ onMounted(() => {
             <Search class="searchIcon" @click="handleSearch"/>
         </div>
         <div class="utils">
-            <div class="login" @click="turnToPage('login', -2, false)" v-if="!userMessage.uid">登录</div>
-            <div class="logout" @click="handleLogout" v-else>注销</div>
-            <div class="publish" @click="turnToPage('publish', -1, false)" v-if="userMessage.type === 1">发布文章</div>
+            <div class="userCenter button" @click="turnToPage('user', -3, false)"  v-if="userMessage.uid">个人中心</div>
+            <div class="login button" @click="turnToPage('login', -2, false)" v-if="!userMessage.uid">登录</div>
+            <div class="logout button" @click="handleLogout" v-else>注销</div>
+            <div class="publish button" @click="turnToPage('publish', -1, false)" v-if="userMessage.type === 1">发布文章</div>
         </div>
     </div>
 </template>
@@ -92,7 +95,7 @@ onMounted(() => {
     width: 100%;
     height: 600px;
     margin-top: 50px;
-
+    min-width: 1500px;
     img {
         width: 100%;
         height: 100%;
@@ -102,7 +105,7 @@ onMounted(() => {
 .tab {
     display: flex;
     width: 100%;
-    min-width: 900px;
+    min-width: 1500px;
     height: 50px;
     position: fixed;
     top: 0;
@@ -144,7 +147,8 @@ onMounted(() => {
         justify-content: space-around;
 
         .userHeadPortrait {
-            width: 50px;
+            width: 45px;
+            height: 45px;
             border-radius: 50px;
         }
     }
@@ -164,35 +168,31 @@ onMounted(() => {
         }
     }
     .utils {
-        width: 200px;
+        width: 300px;
         height: 50px;
         position: absolute;
         display: flex;
         align-items: center;
         justify-content: space-around;
         right: 0px;
-
+        .button{
+            height: 40px;
+                line-height: 40px;
+                border-radius: 25px;
+                background-color: #202b2d;
+                color: white;
+                text-align: center;
+                cursor: pointer;
+        }
+        .userCenter{
+            width: 100px;
+        }
         .logout,
         .login {
             width: 80px;
-            height: 40px;
-            line-height: 40px;
-            border-radius: 25px;
-            background-color: #202b2d;
-            color: white;
-            text-align: center;
-            cursor: pointer;
         }
-
         .publish {
             width: 100px;
-            height: 40px;
-            line-height: 40px;
-            border-radius: 25px;
-            background-color: #202b2d;
-            color: white;
-            text-align: center;
-            cursor: pointer;
         }
     }
 
