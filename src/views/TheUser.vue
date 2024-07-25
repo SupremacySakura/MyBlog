@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 //导入仓库
 import { storeToRefs } from 'pinia'
 //用户仓库
@@ -6,7 +7,7 @@ import { useArticleStore } from '@/stores/article'
 import { computed } from 'vue';
 const articleStore = useArticleStore()
 const { userMessage } = storeToRefs(articleStore)
-const { changeUserHeadPortrait } = articleStore
+const { changeUserHeadPortrait,changeUserName } = articleStore
 //添加图片函数
 const handleChangeUserHeadPortrait = (event: any) => {
     const file = event.target.files[0];
@@ -34,6 +35,13 @@ const userType = computed(()=>{
     }
    
 })
+const changeBoolean = ref(true)
+const changeName = () => {
+    changeBoolean.value=!changeBoolean.value
+}
+const handleChangeName = (e:any) => {
+    changeUserName(userMessage.value.uid,e.target.value)
+}
 </script>
 <template>
     <div class="user">
@@ -47,7 +55,11 @@ const userType = computed(()=>{
                         class="hidden" id="handleChangeUserHeadPortrait">
                 </div>
                 <div class="userNews">uid:{{ userMessage.uid }}</div>
-                <div class="userNews">用户名:{{ userMessage.userName }}</div>
+                <div class="userNews userName">
+                    <div v-if="changeBoolean">用户名:{{ userMessage.userName }} </div>
+                    <input type="text" v-else :value="userMessage.userName" class="nameChange" @change="(e) =>handleChangeName(e)">
+                    <button class="button" @click="changeName">修改用户名</button>
+                </div>
                 <div class="userNews">账号:{{ userMessage.accounts }}</div>
                 <div class="userNews">权限:{{ userType }}</div>
             </div>
@@ -86,6 +98,13 @@ const userType = computed(()=>{
                 font-size: 24px;
                 font-weight: 800;
             }
+            .userName{
+                display: flex;
+                justify-content: space-between;
+                .nameChange{
+                    font-size: 20px;
+                }
+            }
             .userHeadPortraitNews{
                 display: flex;
                 justify-content: space-around;
@@ -104,7 +123,8 @@ const userType = computed(()=>{
             }
                 .userNews {
                     margin-left: 20px;
-                    width: 400px;
+                    margin-right: 20px;
+                    width: 360px;
                     height: 50px;
                     font-size: 18px;
                 }

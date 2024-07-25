@@ -92,6 +92,14 @@ export const useArticleStore = defineStore('article', () => {
       user.value.userHeadPortrait = src
     }
   }
+  //修改名字
+  const changeUserName = (uid: string, name: string) => {
+    const index = userList.value.findIndex(item => item.uid === uid)
+    userList.value[index].userName = name
+    if (user.value != null) {
+      user.value.userName = name
+    }
+  }
   const deleteArticle = (id:number)=>{
     articleList.value=articleList.value.filter(item=>item.id!=id)
   }
@@ -109,5 +117,6 @@ export const useArticleStore = defineStore('article', () => {
     articleSearchList,
     getArticleSearchList,
     changeUserHeadPortrait,
+    changeUserName,
   }
 }, { persist: true })
