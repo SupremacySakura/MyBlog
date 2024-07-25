@@ -11,7 +11,7 @@ export const useArticleStore = defineStore('article', () => {
   const user = ref<userClass | null>(null)
   const userList = ref<userClass[]>([])
   userList.value =[
-    new userClass('super123123301', '余心知秋','15310836616','20050814' ,userHeadPortrait, 1),
+    new userClass('super123123301', '余心知秋','15310836616','2005' ,userHeadPortrait, 1),
     new userClass('fangke123123', '访客','12345678910','123456' ,userHeadPortrait, 2),
   ]
   //登录
@@ -77,6 +77,11 @@ export const useArticleStore = defineStore('article', () => {
   const publishArticle = (item: articleClass) => {
     articleList.value.unshift(item)
   }
+  //搜索文章列表
+  const articleSearchList = ref<articleClass[]>([])
+  const getArticleSearchList = (label:string)=>{
+    articleSearchList.value = articleList.value.filter((item)=>(item.article.includes(label)||item.head.includes(label)||item.digest.includes(label)))
+  }
   const deleteArticle = (id:number)=>{
     articleList.value=articleList.value.filter(item=>item.id!=id)
   }
@@ -91,5 +96,7 @@ export const useArticleStore = defineStore('article', () => {
     userMessage,
     isLoggedIn,
     isWriter,
+    articleSearchList,
+    getArticleSearchList,
   }
 }, { persist: true })

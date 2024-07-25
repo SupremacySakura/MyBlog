@@ -16,7 +16,7 @@ import { articleClass } from '@/classes/articleClass'
 //导入删除弹窗
 import { ElMessage, ElMessageBox } from 'element-plus'
 const articleStore = useArticleStore()
-const { user, articleList } = storeToRefs(articleStore)
+const { user, articleList, articleSearchList } = storeToRefs(articleStore)
 const tabStore = useTabStore()
 const { isActive } = storeToRefs(tabStore)
 const { setIsActive, setNeedImage } = tabStore
@@ -66,14 +66,14 @@ const turnToShowPage = (id: number) => {
 </script>
 <template>
     <div class="article" :style="{ height: `${articleList.length * 350}px` }">
-        <Card v-for="(item, index) in articleList" :key="item.id">
+        <Card v-for="(item, index) in articleSearchList? articleSearchList: articleList" :key="item.id">
             <template v-slot:image>
                 <img :src="item.cover" alt="" class="cover">
             </template>
             <template v-slot:content>
                 <!-- 标题 -->
                 <p class="head" @click="turnToShowPage(item.id)">{{ item.head }}</p>
-                <p class="body" >{{ item.digest }}</p>
+                <p class="body">{{ item.digest }}</p>
                 <div class="news">
                     <!-- 头像 -->
                     <img :src="item.user.userHeadPortrait" alt="" class="headPortrait">
@@ -84,6 +84,7 @@ const turnToShowPage = (id: number) => {
             </template>
         </Card>
         <div v-if="articleList.length===0" class="noArticle">作者还未发布任何文章哟...</div>
+        <div v-if="articleSearchList.length === 0" class="noArticle">未搜索到相关文章...</div>
     </div>
 </template>
 <style scoped lang="less">

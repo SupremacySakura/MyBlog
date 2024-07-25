@@ -17,8 +17,8 @@ const { setIsActive, setNeedImage,getSrc } = tabStore
 //用户仓库
 import { useArticleStore } from '@/stores/article'
 const articleStore = useArticleStore()
-const { userMessage } = storeToRefs(articleStore)
-const { logout } = articleStore
+const { userMessage,articleSearchList } = storeToRefs(articleStore)
+const { logout,getArticleSearchList } = articleStore
 //导航高亮显示
 const backgroundImageList: string[] = [
     backgroundImage2,
@@ -28,6 +28,10 @@ const backgroundImageList: string[] = [
 //导航栏
 //跳转页面函数
 const turnToPage = (src: string, id: number, isNeedImage: boolean) => {
+    //获取文章
+    getArticleSearchList(search.value)
+    //跳转前清空搜索栏
+    search.value = ''
     router.replace({ name: src })
     setIsActive(id)
     setNeedImage(isNeedImage)
@@ -36,6 +40,11 @@ const turnToPage = (src: string, id: number, isNeedImage: boolean) => {
 const handleLogout = () => {
     logout()
     turnToPage('home',0,true)
+}
+//搜索
+const search = ref('')
+const handleSearch = ()=>{
+    turnToPage('article',1,true)
 }
 //初始化
 onMounted(() => {
@@ -65,6 +74,10 @@ onMounted(() => {
         <div class="user" v-if="userMessage.uid">
             <img :src="userMessage.userHeadPortrait" class="userHeadPortrait">
             <span>{{ userMessage.userName }}</span>
+        </div>
+        <div class="search">
+            <input type="text" class="searchInput" placeholder="搜索文章" v-model="search">
+            <Search class="searchIcon" @click="handleSearch"/>
         </div>
         <div class="utils">
             <div class="login" @click="turnToPage('login', -2, false)" v-if="!userMessage.uid">登录</div>
@@ -135,7 +148,21 @@ onMounted(() => {
             border-radius: 50px;
         }
     }
-
+    .search{
+        width: 200px;
+        margin-left: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        .searchInput {
+            height: 30px;
+        }
+        .searchIcon {
+            cursor: pointer;
+            margin-left: 10px;
+            width: 40px;
+        }
+    }
     .utils {
         width: 200px;
         height: 50px;
