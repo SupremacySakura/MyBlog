@@ -68,7 +68,7 @@ const handleChangeName = (e:any) => {
 </template>
 <style scoped lang="less">
 .user{
-    border: 1px solid black;
+    border-top: 1px solid black;
     margin-top: 50px;
     display: flex;
     align-items: center;
@@ -142,11 +142,13 @@ const handleChangeName = (e:any) => {
     line-height: 40px;
     text-align: center;
 }
+.board:hover,
 .news:hover {
     animation-name: bigger;
     animation-duration: 0.5s;
     animation-fill-mode: forwards;
 }
+.board:not(:hover) ,
 .news:not(:hover) {
     animation-name: smaller;
     animation-duration: 0.5s;

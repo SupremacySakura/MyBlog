@@ -78,13 +78,15 @@ onMounted(() => {
         </div>
         <div class="search">
             <input type="text" class="searchInput" placeholder="搜索文章" v-model="search">
-            <Search class="searchIcon" @click="handleSearch"/>
+            <Search class="searchIcon" @click="handleSearch" />
         </div>
         <div class="utils">
-            <div class="userCenter button" @click="turnToPage('user', -3, false)"  v-if="userMessage.uid">个人中心</div>
+            <div class="userCenter button" @click="turnToPage('user', -3, false)" v-if="userMessage.uid"
+                :class="{activeTwo:isActive===-3}">个人中心</div>
             <div class="login button" @click="turnToPage('login', -2, false)" v-if="!userMessage.uid">登录</div>
             <div class="logout button" @click="handleLogout" v-else>注销</div>
-            <div class="publish button" @click="turnToPage('publish', -1, false)" v-if="userMessage.type === 1">发布文章</div>
+            <div class="publish button" @click="turnToPage('publish', -1, false)" v-if="userMessage.type === 1"
+                :class="{ activeTwo: isActive === -1 }">发布文章</div>
         </div>
     </div>
 </template>
@@ -159,6 +161,7 @@ onMounted(() => {
         align-items: center;
         justify-content: space-around;
         .searchInput {
+            outline: none;
             height: 30px;
         }
         .searchIcon {
@@ -179,8 +182,8 @@ onMounted(() => {
             height: 40px;
                 line-height: 40px;
                 border-radius: 25px;
-                background-color: #202b2d;
-                color: white;
+                background-color: #c1c1c1;
+                color: black;
                 text-align: center;
                 cursor: pointer;
         }
@@ -200,6 +203,9 @@ onMounted(() => {
 
 
 .active {
-    color: #439388;
+    color: #439388 !important;
+}
+.activeTwo {
+    color: #3e80ca !important;
 }
 </style>
