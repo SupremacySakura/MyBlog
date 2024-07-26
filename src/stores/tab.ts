@@ -39,6 +39,8 @@ export const useTabStore = defineStore('tab', () => {
                 return 'login'
             case -3 :
                 return 'user'
+            case -4 :
+                return 'register'
             default:
                 return 'home'        
         }
@@ -59,6 +61,8 @@ export const useTabStore = defineStore('tab', () => {
                 return -2
             case 'user':
                 return -3
+            case 'register':
+                return -4
             default:
                 return 0
         }

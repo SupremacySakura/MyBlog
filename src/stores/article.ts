@@ -1,4 +1,4 @@
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 //导入文章类与用户类
 import { userClass } from '@/classes/userClass'
@@ -14,6 +14,39 @@ export const useArticleStore = defineStore('article', () => {
     new userClass('super123', '余心知秋2', '153', '2005', userHeadPortrait, 1),
     new userClass('fangke123123', '访客','12345678910','123456' ,userHeadPortrait, 2),
   ]
+  //注册用户
+  const register = (userName:string,accounts:string,password:string)=>{
+    //检查用户账号是否重复
+    const accountsTrue =  userList.value.find(item=>item.accounts===accounts)
+    if(accountsTrue){
+      return {
+        message:'账号重复',
+        code:400
+      }
+    }
+    //生成一个不重复的uid
+    let uid = Math.floor(Math.random()*10000000000+1).toString()
+    let uidTrue = userList.value.find(item => item.uid === uid)
+    for(let i =0;i<=10;i++){
+      if(uidTrue){
+        uid = Math.floor(Math.random() * 10000000000 + 1).toString()
+      }else{
+        break
+      }
+      if(i===9){
+        return {
+          message:'注册失败,请联系管理员',
+          code:400
+        }
+      }
+    }
+    const type = 2
+    userList.value.push(new userClass(uid,userName,accounts,password,userHeadPortrait,type))
+    return {
+      message:'注册成功',
+      code:200
+    }   
+  }
   //登录
   const login = (accounts:string,password:string)=>{
     const accountsIndex = userList.value.findIndex(item => item.accounts === accounts)
@@ -119,5 +152,6 @@ export const useArticleStore = defineStore('article', () => {
     getArticleSearchList,
     changeUserHeadPortrait,
     changeUserName,
+    register,
   }
 }, { persist: true })

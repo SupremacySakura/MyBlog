@@ -8,6 +8,7 @@ import Show from '@/views/TheArticleShowPage.vue'
 import Publish from '@/views/TheArticlePublish.vue'
 import Login from '@/views/TheLogin.vue'
 import User from '@/views/TheUser.vue'
+import Register from '@/views/TheRegister.vue'
 export const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -52,6 +53,11 @@ export const router = createRouter({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register
     },
     {
       path: '/', redirect: '/home'

@@ -73,6 +73,7 @@ const handleLogin = ()=>{
             flex-direction: column;
             justify-content: space-around;
             align-items: center;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
             .head{
                 font-size: 30px;
                 font-weight: 800;

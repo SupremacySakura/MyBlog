@@ -64,7 +64,7 @@ onMounted(() => {
         </el-carousel>
     </div>
     <!-- 导航栏 -->
-    <div class="tab" v-if="isActive !== -2">
+    <div class="tab">
         <span class="name">
             余心知秋的博客
         </span>
@@ -84,6 +84,7 @@ onMounted(() => {
             <div class="userCenter button" @click="turnToPage('user', -3, false)" v-if="userMessage.uid"
                 :class="{activeTwo:isActive===-3}">个人中心</div>
             <div class="login button" @click="turnToPage('login', -2, false)" v-if="!userMessage.uid">登录</div>
+            <div class="register button" @click="turnToPage('register', -4, false)" v-if="!userMessage.uid">注册</div>
             <div class="logout button" @click="handleLogout" v-else>注销</div>
             <div class="publish button" @click="turnToPage('publish', -1, false)" v-if="userMessage.type === 1"
                 :class="{ activeTwo: isActive === -1 }">发布文章</div>
@@ -190,6 +191,7 @@ onMounted(() => {
         .userCenter{
             width: 100px;
         }
+        .register,
         .logout,
         .login {
             width: 80px;
