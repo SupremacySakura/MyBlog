@@ -139,6 +139,7 @@ export const useArticleStore = defineStore('article', () => {
  
   return {
     user,
+    userList,
     articleList,
     publishArticle,
     deleteArticle,

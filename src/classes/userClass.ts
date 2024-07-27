@@ -5,7 +5,7 @@ export class userClass {
     accounts:string //账号
     password:string //密码
     userHeadPortrait: string //用户头像
-    type:number //用户级别 1为管理员 2为访客
+    type:number //用户级别 0为管理员 1为作者 2为访客
     constructor(uid: string, userName: string,accounts:string,password:string ,userHeadPortrait: string,type:number) {
         this.uid = uid
         this.userName = userName

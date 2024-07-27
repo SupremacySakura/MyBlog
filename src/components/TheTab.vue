@@ -88,6 +88,8 @@ onMounted(() => {
             <div class="logout button" @click="handleLogout" v-else>注销</div>
             <div class="publish button" @click="turnToPage('publish', -1, false)" v-if="userMessage.type === 1"
                 :class="{ activeTwo: isActive === -1 }">发布文章</div>
+            <div class="management button" @click="turnToPage('management', -5, false)" v-if="userMessage.type === 1"
+                :class="{ activeTwo: isActive === -1 }">用户管理</div>
         </div>
     </div>
 </template>
@@ -172,7 +174,7 @@ onMounted(() => {
         }
     }
     .utils {
-        width: 300px;
+        width: 400px;
         height: 50px;
         position: absolute;
         display: flex;
@@ -196,6 +198,7 @@ onMounted(() => {
         .login {
             width: 80px;
         }
+        .management,
         .publish {
             width: 100px;
         }

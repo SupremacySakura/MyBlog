@@ -9,6 +9,7 @@ import Publish from '@/views/TheArticlePublish.vue'
 import Login from '@/views/TheLogin.vue'
 import User from '@/views/TheUser.vue'
 import Register from '@/views/TheRegister.vue'
+import Management from '@/views/TheManagement.vue'
 export const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -47,6 +48,12 @@ export const router = createRouter({
       path: '/user',
       name: 'user',
       component: User,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/management',
+      name: 'management',
+      component: Management,
       meta: { requiresAuth: true }
     },
     {
@@ -95,7 +102,7 @@ router.beforeEach((to, from, next) => {
     }else{
       //已登录
       //判断是否为需要作者权限访问的页面
-      if(getSrc()==='publish'){
+      if(getSrc()==='publish'||getSrc()==='management'){
         //是
         //判断是否为作者
         if(isWriter){
