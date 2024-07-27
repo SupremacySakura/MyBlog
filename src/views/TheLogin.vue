@@ -45,16 +45,27 @@ const handleLogin = ()=>{
        })
    }
 }
+//密码显示
+const isShow = ref(true)
+const changeShow = ()=>{
+    isShow.value=!isShow.value
+}
 </script>
 <template>
-   <div class="login">
-    <form class="loginForm">
-        <div class="head">登录</div>
-        <input type="text" class="name" placeholder="账号" v-model="accounts"></input>
-        <input type="password" class="password" placeholder="密码" v-model="password"></input>
-        <button @click.prevent="handleLogin">确认登录</button>
-    </form>
-   </div>
+    <div class="login">
+        <form class="loginForm">
+            <div class="head">登录</div>
+            <input type="text" class="name" placeholder="账号" v-model="accounts"></input>
+            <div class="password">
+                <input :type="isShow?'text':'password'" class="passwordInput" placeholder="密码" v-model="password"></input>
+                <el-icon class="eyes" @click="changeShow">
+                    <Hide v-if="!isShow" />
+                    <View v-else />
+                </el-icon>
+            </div>
+            <button @click.prevent="handleLogin">确认登录</button>
+        </form>
+    </div>
 </template>
 <style scoped lang="less">
     .login{
@@ -78,6 +89,18 @@ const handleLogin = ()=>{
                 font-size: 30px;
                 font-weight: 800;
             }
+            .password{
+                display: flex;
+                width: 400px;
+                align-items: center;
+                cursor: pointer;
+                input{
+                    width: 360px;
+                }
+                .eyes{
+                    margin-left: 4px;
+                }
+            }
             input{
                 width: 400px;
                 height: 50px;
@@ -88,6 +111,7 @@ const handleLogin = ()=>{
             button{
                 width: 200px;
                 height: 40px;
+                cursor: pointer;
             }
         }
     }
