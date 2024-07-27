@@ -26,8 +26,12 @@ const handleChangeUserHeadPortrait = (event: any) => {
 }
 const userType = computed(()=>{
     switch (userMessage.value.type){
-        case 1:
+        case -1 :
+            return '最高管理者'
+        case 0:
             return '管理员'
+        case 1:
+            return '作者'
         case 2:
             return '访客'
         default :

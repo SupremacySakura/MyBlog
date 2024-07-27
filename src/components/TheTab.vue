@@ -86,10 +86,10 @@ onMounted(() => {
             <div class="login button" @click="turnToPage('login', -2, false)" v-if="!userMessage.uid">登录</div>
             <div class="register button" @click="turnToPage('register', -4, false)" v-if="!userMessage.uid">注册</div>
             <div class="logout button" @click="handleLogout" v-else>注销</div>
-            <div class="publish button" @click="turnToPage('publish', -1, false)" v-if="userMessage.type === 1"
+            <div class="publish button" @click="turnToPage('publish', -1, false)" v-if="userMessage.type <= 1"
                 :class="{ activeTwo: isActive === -1 }">发布文章</div>
-            <div class="management button" @click="turnToPage('management', -5, false)" v-if="userMessage.type === 1"
-                :class="{ activeTwo: isActive === -1 }">用户管理</div>
+            <div class="management button" @click="turnToPage('management', -5, false)" v-if="userMessage.type <= 0"
+                :class="{ activeTwo: isActive === -5 }">用户管理</div>
         </div>
     </div>
 </template>
@@ -109,7 +109,7 @@ onMounted(() => {
 .tab {
     display: flex;
     width: 100%;
-    min-width: 1500px;
+    min-width: 1660px;
     height: 50px;
     position: fixed;
     z-index: 1;

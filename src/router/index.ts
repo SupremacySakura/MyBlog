@@ -77,13 +77,12 @@ import { storeToRefs } from 'pinia'
 import { useArticleStore } from '@/stores/article'
 //导航栏仓库
 import { useTabStore } from '@/stores/tab'
-import { get } from 'lodash'
 router.beforeEach((to, from, next) => {
   const articleStore = useArticleStore()
-  const { isWriter, userMessage,isLoggedIn } = storeToRefs(articleStore)
+  const { isWriter,isLoggedIn,isManager,isMostManager } = storeToRefs(articleStore)
   const tabStore = useTabStore()
-  const { isActive,needImage } = storeToRefs(tabStore)
-  const { setIsActive, setNeedImage,getSrc, getId } = tabStore
+  const {  } = storeToRefs(tabStore)
+  const { setIsActive, setNeedImage,getSrc } = tabStore
   //跳转页面函数
   const turnToPage = (src: string, id: number, isNeedImage: boolean) => {
     router.replace({ name: src })
@@ -101,11 +100,28 @@ router.beforeEach((to, from, next) => {
       }
     }else{
       //已登录
-      //判断是否为需要作者权限访问的页面
-      if(getSrc()==='publish'||getSrc()==='management'){
+      //判断是否为最高管理者
+      if(isMostManager){
+        next()
+        return
+      }
+      //判断是否为需要管理员权限访问的页面
+      if(getSrc()==='management'){
         //是
-        //判断是否为作者
-        if(isWriter){
+        //判断是否为管理员
+        if(isManager){
+          next()
+        }else{
+          //不是
+          setIsActive(0)
+          setNeedImage(true)
+          turnToPage('home', 0, true)
+        }
+      }else if(getSrc()==='publish'){
+        //判断是否为需要作者权限访问的页面
+        //是
+        //判断是否为作者或管理员
+        if(isWriter||isManager){
           //是
           next()
         }else{
@@ -115,7 +131,7 @@ router.beforeEach((to, from, next) => {
           turnToPage('home', 0, true)
         }
       }else{
-        //不需要作者权限
+        //不需要权限
         next()
       }
     }

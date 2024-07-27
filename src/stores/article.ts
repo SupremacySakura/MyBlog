@@ -10,9 +10,10 @@ export const useArticleStore = defineStore('article', () => {
   const user = ref<userClass | null>(null)
   const userList = ref<userClass[]>([])
   userList.value =[
-    new userClass('super123123301', '余心知秋','15310836616','2005' ,userHeadPortrait, 1),
-    new userClass('super123', '余心知秋2', '153', '2005', userHeadPortrait, 1),
-    new userClass('fangke123123', '访客','12345678910','123456' ,userHeadPortrait, 2),
+    new userClass('super123123301', '余心知秋1','15310836616','2005' ,userHeadPortrait, -1,1),
+    new userClass('super123', '余心知秋2', '153', '2005', userHeadPortrait, 0,1),
+    new userClass('fangke123123', '余心知秋3','12345678910','123456' ,userHeadPortrait, 1,1),
+    new userClass('fangke123', '余心知秋3', '1234123213', '123456', userHeadPortrait, 2,1),
   ]
   //注册用户
   const register = (userName:string,accounts:string,password:string)=>{
@@ -41,11 +42,25 @@ export const useArticleStore = defineStore('article', () => {
       }
     }
     const type = 2
-    userList.value.push(new userClass(uid,userName,accounts,password,userHeadPortrait,type))
+    userList.value.push(new userClass(uid,userName,accounts,password,userHeadPortrait,type,1))
     return {
       message:'注册成功',
       code:200
     }   
+  }
+  //删除用户
+  const deleteUser = (uid:string)=>{
+   userList.value=userList.value.filter(item=>item.uid!==uid)
+  }
+  //冻结与解冻用户
+  const userIce = (type:string,uid:string)=>{
+    if(type==='getIce'){
+      const Index = userList.value.findIndex(item => item.uid === uid)
+      userList.value[Index].state=0
+    }else if(type==='loseIce'){
+      const Index = userList.value.findIndex(item => item.uid === uid)
+      userList.value[Index].state =1
+    }
   }
   //登录
   const login = (accounts:string,password:string)=>{
@@ -62,7 +77,13 @@ export const useArticleStore = defineStore('article', () => {
       message:'密码错误',
       code:400
     }
-   }else{
+   } else if (userList.value[accountsIndex].state===0){
+     return {
+       message: '账号已被冻结,请联系管理员',
+       code: 400
+     }
+   }
+   else{
      user.value = userList.value[accountsIndex]
     return {
       message:'登录成功',
@@ -82,7 +103,7 @@ export const useArticleStore = defineStore('article', () => {
         uid: '',
         userName: '',
         userHeadPortrait: userHeadPortrait,
-        type: -1,
+        type: 100,
         accounts:''
       }
       return userMessage
@@ -105,6 +126,12 @@ export const useArticleStore = defineStore('article', () => {
   })
   const isWriter = computed(()=>{
     return userMessage.value.type===1
+  })
+  const isManager = computed(() => {
+    return userMessage.value.type === 0
+  })
+  const isMostManager = computed(()=>{
+    return userMessage.value.type ===-1
   })
   //文章列表
   const articleList = ref<articleClass[]>([])
@@ -154,5 +181,9 @@ export const useArticleStore = defineStore('article', () => {
     changeUserHeadPortrait,
     changeUserName,
     register,
+    isManager,
+    isMostManager,
+    deleteUser,
+    userIce
   }
 }, { persist: true })
