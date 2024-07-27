@@ -3,10 +3,6 @@ import { ref } from 'vue'
 import {
     Check,
     Delete,
-    Edit,
-    Message,
-    Search,
-    Star,
 } from '@element-plus/icons-vue'
 //导入仓库
 import { storeToRefs } from 'pinia'
@@ -101,7 +97,7 @@ const confirm = ()=>{
                     <td>{{ item.uid }}</td>
                     <td>{{ item.userName }}</td>
                     <td>{{ item.accounts }}</td>
-                    <td>{{ item.password }}</td>
+                    <td>{{ item.type>=userMessage.type?item.password:'' }}</td>
                     <td>{{ getType(item.type) }}</td>
                     <td>{{ getArticleNumber(item.uid) }}</td>
                     <td>{{ getState(item.state) }}</td>

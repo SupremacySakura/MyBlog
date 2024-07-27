@@ -79,7 +79,7 @@ const articleListNow = computed(()=>{
                     <!-- 日期 -->
                     <span class="date">{{ `${item.user.userName} ${item.date}` }}</span>
                 </div>
-                <button class="delete" @click="handleDelete(item.id)" v-if="userMessage.uid===item.user.uid">x</button>
+                <button class="delete" @click="handleDelete(item.id)" v-if="userMessage.uid===item.user.uid||userMessage.type<item.user.type">x</button>
             </template>
         </Card>
         <div v-if="articleList.length===0" class="noArticle">作者还未发布任何文章哟...</div>
