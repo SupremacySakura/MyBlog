@@ -3,6 +3,8 @@ import { ref } from 'vue'
 import {
     Check,
     Delete,
+    Top,
+    Bottom
 } from '@element-plus/icons-vue'
 //导入仓库
 import { storeToRefs } from 'pinia'
@@ -10,7 +12,7 @@ import { storeToRefs } from 'pinia'
 import { useArticleStore } from '@/stores/article'
 const articleStore = useArticleStore()
 const { userList,articleList,userMessage } = storeToRefs(articleStore)
-const { deleteUser,userIce } = articleStore
+const { deleteUser,userIce,upgrade,downgrade } = articleStore
 const getType = (type:number)=>{
     switch(type){
         case -1:
@@ -61,6 +63,20 @@ const handleIce = (uid:string,state:number)=>{
     }
    
 }
+//升级
+const handleUpgrade = (uid:string)=>{
+    userUid.value = uid
+    message.value = '你确定要升级该用户吗'
+    dialogVisible.value = true
+    type.value = 'upgrade'
+}
+//降级
+const handleDowngrade = (uid: string) => {
+    userUid.value = uid
+    message.value = '你确定要降级该用户吗'
+    dialogVisible.value = true
+    type.value = 'downgrade'
+}
 const dialogVisible = ref(false)
 const confirm = ()=>{
     dialogVisible.value = false
@@ -70,8 +86,11 @@ const confirm = ()=>{
         userIce(type.value, userUid.value)
     }else if(type.value==='loseIce'){
         userIce(type.value, userUid.value)
+    }else if (type.value==='upgrade'){
+        upgrade(userUid.value)
+    }else if (type.value==='downgrade'){
+        downgrade(userUid.value)
     }
-    
 }
 </script>
 <template>
@@ -89,6 +108,8 @@ const confirm = ()=>{
                     <th>账号状态</th>
                     <th>删除用户</th>
                     <th>冻结/解冻用户</th>
+                    <th>升级</th>
+                    <th>降级</th>
                 </tr>
             </thead>
             <tbody>
@@ -103,23 +124,29 @@ const confirm = ()=>{
                     <td>{{ getState(item.state) }}</td>
                     <td><el-button type="danger" :icon="Delete" circle v-if="getIsShow(userMessage.type,item.type)"
                             @click="handleDelete(item.uid)" /></td>
-                    <td><el-button type="primary" :icon="Check" circle v-if="getIsShow(userMessage.type, item.type)" 
-                        @click="handleIce(item.uid,item.state)"/></td>
+                    <td><el-button type="primary" :icon="Check" circle v-if="getIsShow(userMessage.type, item.type)"
+                            @click="handleIce(item.uid,item.state)" /></td>
+                    <td>
+                        <el-button type="success" :icon="Top" circle v-if="getIsShow(userMessage.type, item.type)&&item.type>0" @click="handleUpgrade(item.uid)"/>
+                    </td>
+                    <td>
+                        <el-button type=" danger" :icon="Bottom" circle v-if="getIsShow(userMessage.type, item.type)&&item.type<2"@click="handleDowngrade(item.uid)" />
+                    </td>
                 </tr>
             </tbody>
         </table>
         <!-- 对话弹窗 -->
         <el-dialog v-model=" dialogVisible" title="Tips" width="500">
-                            <span>{{ message }}</span>
-                            <template #footer>
-                                <div class="dialog-footer">
-                                    <el-button @click="dialogVisible = false">取消</el-button>
-                                    <el-button type="primary" @click="confirm()">
-                                        确定
-                                    </el-button>
-                                </div>
-                            </template>
-                            </el-dialog>
+            <span>{{ message }}</span>
+            <template #footer>
+                <div class="dialog-footer">
+                    <el-button @click="dialogVisible = false">取消</el-button>
+                    <el-button type="primary" @click="confirm()">
+                        确定
+                    </el-button>
+                </div>
+            </template>
+        </el-dialog>
     </div>
 </template>
 <style scoped lang="less">

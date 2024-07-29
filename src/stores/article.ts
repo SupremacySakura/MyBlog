@@ -62,6 +62,16 @@ export const useArticleStore = defineStore('article', () => {
       userList.value[Index].state =1
     }
   }
+  //升级
+  const upgrade = (uid:string)=>{
+    const Index = userList.value.findIndex(item => item.uid === uid)
+    userList.value[Index].type -= 1
+  }
+  //降级
+  const downgrade = (uid:string)=>{
+    const Index = userList.value.findIndex(item => item.uid === uid)
+    userList.value[Index].type += 1
+  }
   //登录
   const login = (accounts:string,password:string)=>{
     const accountsIndex = userList.value.findIndex(item => item.accounts === accounts)
@@ -184,6 +194,8 @@ export const useArticleStore = defineStore('article', () => {
     isManager,
     isMostManager,
     deleteUser,
-    userIce
+    userIce,
+    upgrade,
+    downgrade
   }
 }, { persist: true })
